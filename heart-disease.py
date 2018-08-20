@@ -34,8 +34,8 @@ X_train,X_test,y_train,y_test= train_test_split(X,y)
 def ReadData(age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slop,ca,thal):
     model.fit(X_train, y_train)
     dubao = model.predict(np.array([age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slop,ca,thal]).reshape(1,13))
-    print (dubao)
+    return dubao[0]
 
-ReadData(56,0,2,140,294,0,2,153,0,1.3,2,0,3)
+print (ReadData(57,1,4,140,192,0,0,148,0,0.4,2,0,6))
 
 # print ("Do chinh xac tong the: ",accuracy_score(thucte,dubao))
