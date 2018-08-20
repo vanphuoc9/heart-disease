@@ -25,7 +25,7 @@ X[:, 0:13] = my_imputer.transform(X[:, 0:13])
 #Chon du lieu da tach theo nghi thuc hold-out
 X_train,X_test,y_train,y_test= train_test_split(X,y)
 # #Xay dung mo hinh Bayes voi 2 tap du lieu X_train va y_train
-
+print(X)
 #
 # #Thuc hien doan nhan cho tap du lieu X con lai va luu nhan cua chung vao vien thucte de doi chieu
 # dubao = model.predict(np.array([56,0,2,140,294,0,2,153,0,1.3,2,0,3]).reshape(1,13))
