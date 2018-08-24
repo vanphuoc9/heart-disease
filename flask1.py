@@ -14,18 +14,6 @@ from sklearn.model_selection import train_test_split
 # #Tao ra mo hinh xac suat Bayes thong qua thu vien
 from sklearn.naive_bayes import GaussianNB
 
-#Chon du lieu da tach theo nghi thuc hold-out
-
-# #Xay dung mo hinh Bayes voi 2 tap du lieu X_train va y_train
-# def ReadData(age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slop,ca,thal):
-#     model.fit(X_train, y_train)
-#     dubao = model.predict(np.array([age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slop,ca,thal]).reshape(1,13))
-#     return dubao[0]
-
-
-
-
-
 @app.route('/getResult',methods=['GET','POST'])
 
 def index():
