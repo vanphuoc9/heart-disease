@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 import pandas as pd
 import numpy as np
+import csv
 from sklearn.externals import joblib
 import sklearn
 from sklearn.preprocessing import Imputer
@@ -14,8 +15,36 @@ from sklearn.model_selection import train_test_split
 # #Tao ra mo hinh xac suat Bayes thong qua thu vien
 from sklearn.naive_bayes import GaussianNB
 
-@app.route('/getResult',methods=['GET','POST'])
+@app.route('/feedback',methods=['GET','POST'])
+def feedback():
+    #get data from json
+    age = request.json['age']
+    sex = request.json['sex']
+    cp = request.json['cp']
+    trestbps = request.json['trestbps']
+    chol = request.json['chol']
+    fbs = request.json['fbs']
+    restecg = request.json['restecg']
+    thalach = request.json['thalach']
+    exang = request.json['exang']
+    oldpeak = request.json['oldpeak']
+    slop = request.json['slop']
+    ca = request.json['ca']
+    thal = request.json['thal']
+    pred = request.json['pred']
+    # row = [63,1,1,145,233,1,2,150,0,2.3,3,0,6,0]
+    row = [age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slop,ca,thal,pred]
+    with open('Heart_Disease_Data.csv', 'a') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerow(row)
+    csvFile.close()
 
+    return jsonify({'result': "success"})
+
+
+
+
+@app.route('/getResult',methods=['GET','POST'])
 def index():
     model = GaussianNB()
     #Doc du lieu tu file
@@ -50,9 +79,9 @@ def index():
     modeltest = joblib.load('model.pkl')
     dubao = modeltest.predict_proba(np.array([age,sex,cp,trestbps,chol,fbs,restecg,thalach,exang,oldpeak,slop,ca,thal]).reshape(1,13))
      # persist model
-    return jsonify({'result': round(dubao[0,1]), 'accuracy': round(model.score(X_train, y_train) * 100, 2)})
+    return jsonify({'result': round(dubao[0,1]), 'accuracy': round(model.score(X_test, y_test) * 100, 2)})
     # return jsonify({"age": age, "sex": sex, "cp": cp, "trestbps": trestbps, "chol":chol, "fbs": fbs, "restecg": restecg, "thalach": thalach, "exang": exang, "oldpeak": oldpeak, "slop": slop, "ca": ca, "thal": thal})
 
 
 if __name__ == "__main__":
-    app.run(host='172.20.10.2',debug=True, port=5000)
+    app.run(host='0.0.0.0',debug=True, port=5000)

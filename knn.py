@@ -1,3 +1,4 @@
+# Import relevant machine learning models
 import pandas as pd
 import numpy as np
 
@@ -16,16 +17,13 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 # Decision Tree
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import StandardScaler
+# from sklearn.ensemble import VotingClassifier
 
-random_state = 43
-modelDTC = DecisionTreeClassifier(criterion = "entropy", random_state = random_state)
-modelknn = KNeighborsClassifier(n_neighbors=3)
-modelsvm = SVC(random_state=random_state)
-modelsvclinear = SVC(kernel="linear",random_state=random_state)
-# modelsvc = SVC(kernel="rbf",random_state=random_state)
-model = GaussianNB()
 
-#Doc du lieu tu file
+
+
+#Import Dataset
 dataset = pd.read_csv("Heart_Disease_Data.csv",na_values="?", low_memory = False)
 
 # doi cac gia tri 1, 2, 3, 4 ve 1
@@ -47,9 +45,11 @@ y = dataset.iloc[:, -1].values # = dataset.iloc[:, 13].values
 my_imputer = Imputer(missing_values='NaN', strategy='mean', axis=0)
 my_imputer = my_imputer.fit(X[:,0:13])
 X[:, 0:13] = my_imputer.transform(X[:, 0:13])
+#High variance has to be standardised
+
 
 # print (y)
-# print (X)
+print (X)
 # print y
 
 # data = dataset[dataset.columns[:13]]
@@ -57,42 +57,59 @@ X[:, 0:13] = my_imputer.transform(X[:, 0:13])
 #outcome = dataset['pred_attribute']
 
 #Chon du lieu da tach theo nghi thuc hold-out
-X_train,X_test,y_train,y_test= train_test_split(X,y,test_size=1/3.0)
-# X_train,X_test,y_train,y_test= train_test_split(X,y)
-
-# #Xay dung mo hinh Bayes voi 2 tap du lieu X_train va y_train
-model.fit(X_train, y_train)
-modelknn.fit(X_train,y_train)
-modelsvm.fit(X_train,y_train)
-modelsvclinear.fit(X_train,y_train)
-modelDTC.fit(X_train,y_train)
+# X_train,X_test,y_train,y_test= train_test_split(X,y,test_size=1/3.0, random_state=43)
+# # X_train,X_test,y_train,y_test= train_test_split(X,y)
 #
-# #Thuc hien doan nhan cho tap du lieu X con lai va luu nhan cua chung vao vien thucte de doi chieu
-dubao = model.predict(X_test)
-dubaoknn = modelknn.predict(X_test)
-dubaosvc = modelsvclinear.predict(X_test)
-dubaosvm = modelsvm.predict(X_test)
-dubaodt = modelDTC.predict(X_test)
+# random_state = 43
+# # modelsvc = SVC(kernel="rbf",random_state=random_state)
+# model = GaussianNB()
+# modelDTC = DecisionTreeClassifier(criterion = "entropy", random_state = random_state)
+# modelknn = KNeighborsClassifier(n_neighbors=30)
+# modelsvm = SVC(random_state=random_state)
+# modelsvclinear = SVC(kernel="linear",random_state=random_state)
+# modelsvcrbf = SVC(kernel="rbf",random_state=random_state)
 #
-# dubao = model.predict(np.array([63,1,1,145,233,1,2,150,0,2.3,3,0,6]).reshape(1,13))
-thucte = y_test
-
-print (thucte)
-print ("du bao naive")
-print (dubao)
-print ("Do chinh xac tong the: ",accuracy_score(thucte,dubao))
-print (" du bao knn")
-print (dubaoknn)
-print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaoknn))
-print ("du bao svc")
-print (dubaosvc)
-print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaosvc))
-print ("du bao svm")
-print (dubaosvm)
-print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaosvm))
-print ("du bao DecisionTreeClassifier")
-print (dubaodt)
-print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaodt))
+# # #Xay dung mo hinh Bayes voi 2 tap du lieu X_train va y_train
+# model.fit(X_train, y_train)
+# modelknn.fit(X_train,y_train)
+# modelsvm.fit(X_train,y_train)
+# modelsvclinear.fit(X_train,y_train)
+# modelsvcrbf.fit(X_train, y_train)
+# modelDTC.fit(X_train,y_train)
+# #
+# # #Thuc hien doan nhan cho tap du lieu X con lai va luu nhan cua chung vao vien thucte de doi chieu
+# dubao = model.predict(X_test)
+# dubaoknn = modelknn.predict(X_test)
+# dubaosvc = modelsvclinear.predict(X_test)
+# dubaosvm = modelsvm.predict(X_test)
+# dubaosvcrbf = modelsvcrbf.predict(X_test)
+# dubaodt = modelDTC.predict(X_test)
+# #
+# # dubao = model.predict(np.array([63,1,1,145,233,1,2,150,0,2.3,3,0,6]).reshape(1,13))
+# thucte = y_test
+#
+# print (thucte)
+# print ("du bao naive")
+# print (dubao)
+# print ("Do chinh xac tong the: ",accuracy_score(thucte,dubao))
+# print (" du bao knn")
+# print (dubaoknn)
+# print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaoknn))
+# print ("du bao svc linear")
+# print (dubaosvc)
+# print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaosvc))
+# print ("du bao svm")
+# print (dubaosvm)
+# print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaosvm))
+# print ("du bao svcrbf")
+# print (dubaosvcrbf)
+# print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaosvcrbf))
+# print ("du bao DecisionTreeClassifier")
+# print (dubaodt)
+# print ("Do chinh xac tong the: ",accuracy_score(thucte,dubaodt))
+#
+# mlp_lr=VotingClassifier(estimators=[('Guassian Naive Bayes',SVC(probability=True)), ('naive', model)], voting='soft', weights=[2,1]).fit(X_train, y_train)
+# print('The accuracy:',mlp_lr.score(X_test,y_test))
 
 
 # print ("Do chinh xac tong the: ",accuracy_score(thucte,dubao))
